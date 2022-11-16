@@ -14,7 +14,7 @@ class Field {
         this.DOM.addEventListener('drop', (event) => this.onDrop(event));
         this.DOM.addEventListener('dragover', (event) => this.onDragOver(event));
         this.blocks = [];
-        this.midleCords = {x:0,y:0};
+        this.middleCords = {x:0,y:0};
         this.DOM.addEventListener('mousedown', (e)=>this.onMouseDown(e));
         this.DOM.addEventListener('mouseup', (e)=>this.onMouseUp(e));
         this.DOM.addEventListener('mousemove', (e)=>this.onMouseMove(e));
@@ -25,7 +25,7 @@ class Field {
             this.ws.dND = {
                 x:event.x,
                 y:event.y,
-                c:this.midleCords
+                c:this.middleCords
             };
     }
 
@@ -35,7 +35,7 @@ class Field {
 
     onMouseMove (event) {
         if (this.ws.dND)
-            this.midleCords = {
+            this.middleCords = {
                 x:this.ws.dND.c.x - this.ws.dND.x + event.x,
                 y:this.ws.dND.c.y - this.ws.dND.y + event.y
             }
@@ -48,8 +48,6 @@ class Field {
 
     onDrop (event) {
         this.placeBlockNotGivenCords(this.ws.grabedBlock, {x:event.x, y:event.y})
-        console.log(this.blocks);
-        console.log(event)
     }
 
     toPixelCords (cords) {
@@ -98,12 +96,12 @@ class Field {
 
     get startY () {return this.#topY}
     get startX () {return this.#leftX}
-    set midleCords (cords) {
+    set middleCords (cords) {
         this.#leftX = parseInt(cords.x - this.width / 2);
         this.#topY = parseInt(cords.y - this.height / 2);
         this.update()
     }
-    get midleCords () {return {
+    get middleCords () {return {
         x:this.#leftX + this.width / 2,
         y:this.#topY + this.height / 2
     }}
