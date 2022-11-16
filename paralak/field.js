@@ -1,7 +1,7 @@
 class Field {
     pxH = 20
     pxW = 20
-    markupStyle = "rgba(50,50,50,0.2)"
+    markupStyle = "rgba(50,50,50,0.1)"
     #leftX = 0
     #topY = 0
 
