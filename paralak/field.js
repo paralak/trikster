@@ -1,6 +1,7 @@
 class Field {
     pxH = 20
     pxW = 20
+    markupStyle = "rgba(50,50,50,0.2)"
 
     constructor (canvasDOM, ws) {
         this.ws = ws;
@@ -39,7 +40,7 @@ class Field {
     }
 
     drowMarkup () {
-        this.ctx.fillStyle = "rgba(50,50,50,0.2)"
+        this.ctx.fillStyle = this.markupStyle;
         for (let i = 0; i<=this.width/this.pxW; ++i) this.ctx.fillRect(i*this.pxW-1, 0, 2, this.height);
         for (let i = 0; i<=this.height/this.pxH; ++i) this.ctx.fillRect(0, i*this.pxH-1, this.width, 2);
     }
