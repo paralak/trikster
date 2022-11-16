@@ -15,7 +15,32 @@ class Field {
         this.DOM.addEventListener('dragover', (event) => this.onDragOver(event));
         this.blocks = [];
         this.midleCords = {x:0,y:0};
+        this.DOM.addEventListener('mousedown', (e)=>this.onMouseDown(e));
+        this.DOM.addEventListener('mouseup', (e)=>this.onMouseUp(e));
+        this.DOM.addEventListener('mousemove', (e)=>this.onMouseMove(e));
     }
+
+    onMouseDown (event) {
+        if (event.ctrlKey)
+            this.ws.dND = {
+                x:event.x,
+                y:event.y,
+                c:this.midleCords
+            };
+    }
+
+    onMouseUp (event) {
+        this.ws.dND = null;
+    }
+
+    onMouseMove (event) {
+        if (this.ws.dND)
+            this.midleCords = {
+                x:this.ws.dND.c.x - this.ws.dND.x + event.x,
+                y:this.ws.dND.c.y - this.ws.dND.y + event.y
+            }
+    }
+
 
     onDragOver (event) {
         event.preventDefault();
@@ -29,8 +54,8 @@ class Field {
 
     toPixelCords (cords) {
         return {
-            x:((cords.x - this.startX) - cords.x % this.pxW) / this.pxW,
-            y:((cords.y - this.startY) - cords.y % this.pxH) / this.pxH
+            x:((cords.x - this.startX) - (cords.x - this.startX) % this.pxW) / this.pxW,
+            y:((cords.y - this.startY) - (cords.y - this.startY) % this.pxH) / this.pxH
         };
     }
 
@@ -74,10 +99,14 @@ class Field {
     get startY () {return this.#topY}
     get startX () {return this.#leftX}
     set midleCords (cords) {
-        this.#leftX = cords.x - this.width / 2;
-        this.#topY = cords.y - this.height / 2;
+        this.#leftX = parseInt(cords.x - this.width / 2);
+        this.#topY = parseInt(cords.y - this.height / 2);
         this.update()
     }
+    get midleCords () {return {
+        x:this.#leftX + this.width / 2,
+        y:this.#topY + this.height / 2
+    }}
     get height () {return this.DOM.height;}
     get width () {return this.DOM.width;}
 }
