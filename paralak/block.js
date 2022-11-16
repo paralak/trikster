@@ -13,8 +13,14 @@ class Block {
         if (this.ws.grabedBlock == this) this.ws.grabedBlock = null;
     }
 
-    drowInCanvas (ctx, args) {
-        ctx.drawImage(this.imgHTML, args.x, args.y, args.w, args.h);
+    drowInCanvas (field, args) {
+        field.ctx.drawImage(
+            this.imgHTML,
+            args.x * field.pxW,
+            args.y * field.pxH,
+            field.pxW * 2,
+            field.pxH * 2,
+        );
         console.log(this.imgHTML);
     }
 

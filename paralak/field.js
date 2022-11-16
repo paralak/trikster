@@ -25,17 +25,24 @@ class Field {
         console.log(event)
     }
 
-    toGivenCords (cords) {
-        return {x:cords.x - cords.x % this.pxW, y:cords.y - cords.y % this.pxH};
+    toPixelCords (cords) {
+        return {
+            x:(cords.x - cords.x % this.pxW) / this.pxW,
+            y:(cords.y - cords.y % this.pxH) / this.pxH
+        };
     }
 
     placeBlockNotGivenCords (block, cords) {
-        let gCords = this.toGivenCords(cords);
-        this.placeBlock(block, gCords)
+        let pCords = this.toPixelCords(cords);
+        this.placeBlock(block, pCords)
     }
 
     placeBlock (block, cords) {
-        this.blocks.push({x:cords.x, y:cords.y, block:block, h:this.pxH*2, w:this.pxW*2});
+        this.blocks.push(new BlockOnField({
+            block: block,
+            x: cords.x,
+            y: cords.y
+        }));
         this.update();
     }
 
@@ -49,7 +56,7 @@ class Field {
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drowMarkup();
         this.blocks.forEach((item, i) => {
-            item.block.drowInCanvas(this.ctx, item);
+            item.block.drowInCanvas(this, item);
         });
     }
 
