@@ -1,0 +1,12 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.workspace .palette li {
+    background-image: var(--imgsrc);
+    height: 50px;
+    width: 50px;
+    background-size: 50px;
+}
