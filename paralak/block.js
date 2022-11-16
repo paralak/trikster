@@ -16,12 +16,11 @@ class Block {
     drowInCanvas (field, args) {
         field.ctx.drawImage(
             this.imgHTML,
-            args.x * field.pxW,
-            args.y * field.pxH,
+            args.x * field.pxW + field.startX,
+            args.y * field.pxH + field.startY,
             field.pxW * 2,
             field.pxH * 2,
         );
-        console.log(this.imgHTML);
     }
 
     initDOM (parentDOM, tag, ws) {
