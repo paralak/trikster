@@ -48,8 +48,17 @@ class Field {
 
     drowMarkup () {
         this.ctx.fillStyle = this.markupStyle;
-        for (let i = 0; i<=this.width/this.pxW; ++i) this.ctx.fillRect(i*this.pxW-1, 0, 2, this.height);
-        for (let i = 0; i<=this.height/this.pxH; ++i) this.ctx.fillRect(0, i*this.pxH-1, this.width, 2);
+        for (let i = 0; i<=this.width/this.pxW; ++i)
+            this.ctx.fillRect(i*this.pxW-1, 0, 2, this.height);
+        for (let i = 0; i<=this.height/this.pxH; ++i)
+            this.ctx.fillRect(0, i*this.pxH-1, this.width, 2);
+    }
+
+    scaleTo (pxW, pxH = null) {
+        if (!pxH) pxH = pxW;
+        this.pxH = pxH;
+        this.pxW = pxW;
+        this.update();
     }
 
     update () {
