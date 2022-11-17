@@ -46,7 +46,10 @@ class Field {
                 block:t,
                 x:event.x,
                 y:event.y,
-                c:this.toGivenCords(t)
+                c:this.toGivenCords({
+                    x:t.x + 1/2,
+                    y:t.y + 1/2
+                })
             };
     }
 
