@@ -18,10 +18,22 @@ class Field {
         this.DOM.addEventListener('mousedown', (e)=>this.onMouseDown(e));
         this.DOM.addEventListener('mouseup', (e)=>this.onMouseUp(e));
         this.DOM.addEventListener('mousemove', (e)=>this.onMouseMove(e));
+        this.DOM.addEventListener('wheel', (e)=>this.onWheel(e), {passive: false});
+    }
+
+    onWheel (event) {
+
+        if (event.ctrlKey && event.wheelDelta > 0) {
+            event.preventDefault();
+            this.scaleTo(this.pxW + 1);
+        }
+        if (event.ctrlKey && event.wheelDelta < 0) {
+            event.preventDefault();
+            this.scaleTo(this.pxW - 1);
+        }
     }
 
     onMouseDown (event) {
-        console.log(this.toPixelCords(event));
         if (event.ctrlKey && event.button == 0)
             return this.ws.dND = {
                 x:event.x,
@@ -59,7 +71,6 @@ class Field {
             this.update();
         }
     }
-
 
     onDragOver (event) {
         event.preventDefault();
@@ -116,8 +127,7 @@ class Field {
     }
 
     scaleTo (pxW, pxH = null) {
-        pxH = pxH && pxW;
-        this.pxH = pxH;
+        this.pxH = (pxH || pxW);
         this.pxW = pxW;
         this.update();
     }
