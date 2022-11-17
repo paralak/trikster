@@ -21,25 +21,43 @@ class Field {
     }
 
     onMouseDown (event) {
-        console.log(event);
+        console.log(this.toPixelCords(event));
         if (event.ctrlKey && event.button == 0)
-            this.ws.dND = {
+            return this.ws.dND = {
                 x:event.x,
                 y:event.y,
                 c:this.middleCords
+            };
+        let t;
+        if (event.button == 0 && (t = this.checkSelectionBoxes(event)))
+            this.ws.dNDBlock = {
+                block:t,
+                x:event.x,
+                y:event.y,
+                c:this.toGivenCords(t)
             };
     }
 
     onMouseUp (event) {
         this.ws.dND = null;
+        this.ws.dNDBlock = null;
     }
 
     onMouseMove (event) {
-        if (this.ws.dND)
+        let t = this.ws.dND;
+        if (t)
             this.middleCords = {
-                x:this.ws.dND.c.x - this.ws.dND.x + event.x,
-                y:this.ws.dND.c.y - this.ws.dND.y + event.y
+                x:t.c.x + t.x - event.x,
+                y:t.c.y + t.y - event.y
             }
+        t = this.ws.dNDBlock;
+        if (t) {
+            t.block.pixelCords = this.toPixelCords({
+                x:t.c.x - t.x + event.x,
+                y:t.c.y - t.y + event.y
+            });
+            this.update();
+        }
     }
 
 
@@ -51,11 +69,28 @@ class Field {
         this.placeBlockNotGivenCords(this.ws.grabedBlock, {x:event.x, y:event.y})
     }
 
+    checkSelectionBoxes (cords) {
+        let pCords = this.toPixelCords(cords);
+        let selected = null;
+        this.blocks.forEach((item, i) => {
+            if (item.checkSelectionBox(pCords))
+                selected = item;
+        });
+        return selected;
+    }
+
     toPixelCords (cords) {
         return {
-            x:((cords.x - this.startX) - (cords.x - this.startX) % this.pxW) / this.pxW,
-            y:((cords.y - this.startY) - (cords.y - this.startY) % this.pxH) / this.pxH
+            x:((cords.x + this.startX) -(((cords.x+this.startX) % this.pxW) + this.pxW) % this.pxW) / this.pxW,
+            y:((cords.y + this.startY) -(((cords.y+this.startY) % this.pxH) + this.pxH) % this.pxH) / this.pxH
         };
+    }
+
+    toGivenCords (pCords) {
+        return {
+            y:pCords.y * this.pxH - this.startY,
+            x:pCords.x * this.pxW - this.startX
+        }
     }
 
     placeBlockNotGivenCords (block, cords) {
@@ -75,9 +110,9 @@ class Field {
     drowMarkup () {
         this.ctx.fillStyle = this.markupStyle;
         for (let i = 0; i<=this.width/this.pxW; ++i)
-            this.ctx.fillRect(i*this.pxW-1 + this.startX%this.pxW, 0, 2, this.height);
+            this.ctx.fillRect(i*this.pxW-1 - this.startX%this.pxW, 0, 2, this.height);
         for (let i = 0; i<=this.height/this.pxH; ++i)
-            this.ctx.fillRect(0, i*this.pxH-1  + this.startY%this.pxH, this.width, 2);
+            this.ctx.fillRect(0, i*this.pxH-1 - this.startY%this.pxH, this.width, 2);
     }
 
     scaleTo (pxW, pxH = null) {

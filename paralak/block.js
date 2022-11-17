@@ -14,10 +14,11 @@ class Block {
     }
 
     drowInCanvas (field, args) {
+        let gCords = field.toGivenCords(args);
         field.ctx.drawImage(
             this.imgHTML,
-            args.x * field.pxW + field.startX,
-            args.y * field.pxH + field.startY,
+            gCords.x,
+            gCords.y,
             field.pxW * 2,
             field.pxH * 2,
         );

@@ -1,7 +1,7 @@
 class Workspace {
     grabedBlock = null
-    DOM = null
     dND = null
+    dNDBlock = null
 
     constructor (objInDOM) {
         this.DOM = objInDOM;
