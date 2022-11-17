@@ -21,7 +21,8 @@ class Field {
     }
 
     onMouseDown (event) {
-        if (event.ctrlKey)
+        console.log(event);
+        if (event.ctrlKey && event.button == 0)
             this.ws.dND = {
                 x:event.x,
                 y:event.y,
