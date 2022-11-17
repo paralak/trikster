@@ -1,7 +1,7 @@
 class Field {
     pxH = 20
     pxW = 20
-    markupStyle = "rgba(50,50,50,0.2)"
+    markupStyle = "rgba(50,50,50,0.1)"
     #leftX = 0
     #topY = 0
 
@@ -18,29 +18,62 @@ class Field {
         this.DOM.addEventListener('mousedown', (e)=>this.onMouseDown(e));
         this.DOM.addEventListener('mouseup', (e)=>this.onMouseUp(e));
         this.DOM.addEventListener('mousemove', (e)=>this.onMouseMove(e));
+        this.DOM.addEventListener('wheel', (e)=>this.onWheel(e), {passive: false});
+    }
+
+    onWheel (event) {
+
+        if (event.ctrlKey && event.wheelDelta > 0) {
+            event.preventDefault();
+            this.scaleTo(this.pxW + 1);
+        }
+        if (event.ctrlKey && event.wheelDelta < 0) {
+            event.preventDefault();
+            this.scaleTo(this.pxW - 1);
+        }
     }
 
     onMouseDown (event) {
-        if (event.ctrlKey)
-            this.ws.dND = {
+        if (event.ctrlKey && event.button == 0)
+            return this.ws.dND = {
                 x:event.x,
                 y:event.y,
                 c:this.middleCords
+            };
+        let t;
+        if (event.button == 0 && (t = this.checkSelectionBoxes(event)))
+            this.ws.dNDBlock = {
+                block:t,
+                x:event.x,
+                y:event.y,
+                c:this.toGivenCords({
+                    x:t.x + 1/2,
+                    y:t.y + 1/2
+                })
             };
     }
 
     onMouseUp (event) {
         this.ws.dND = null;
+        this.ws.dNDBlock = null;
     }
 
     onMouseMove (event) {
-        if (this.ws.dND)
+        let t = this.ws.dND;
+        if (t)
             this.middleCords = {
-                x:this.ws.dND.c.x - this.ws.dND.x + event.x,
-                y:this.ws.dND.c.y - this.ws.dND.y + event.y
+                x:t.c.x + t.x - event.x,
+                y:t.c.y + t.y - event.y
             }
+        t = this.ws.dNDBlock;
+        if (t) {
+            t.block.pixelCords = this.toPixelCords({
+                x:t.c.x - t.x + event.x,
+                y:t.c.y - t.y + event.y
+            });
+            this.update();
+        }
     }
-
 
     onDragOver (event) {
         event.preventDefault();
@@ -50,11 +83,28 @@ class Field {
         this.placeBlockNotGivenCords(this.ws.grabedBlock, {x:event.x, y:event.y})
     }
 
+    checkSelectionBoxes (cords) {
+        let pCords = this.toPixelCords(cords);
+        let selected = null;
+        this.blocks.forEach((item, i) => {
+            if (item.checkSelectionBox(pCords))
+                selected = item;
+        });
+        return selected;
+    }
+
     toPixelCords (cords) {
         return {
-            x:((cords.x - this.startX) - (cords.x - this.startX) % this.pxW) / this.pxW,
-            y:((cords.y - this.startY) - (cords.y - this.startY) % this.pxH) / this.pxH
+            x:((cords.x + this.startX) -(((cords.x+this.startX) % this.pxW) + this.pxW) % this.pxW) / this.pxW,
+            y:((cords.y + this.startY) -(((cords.y+this.startY) % this.pxH) + this.pxH) % this.pxH) / this.pxH
         };
+    }
+
+    toGivenCords (pCords) {
+        return {
+            y:pCords.y * this.pxH - this.startY,
+            x:pCords.x * this.pxW - this.startX
+        }
     }
 
     placeBlockNotGivenCords (block, cords) {
@@ -74,14 +124,13 @@ class Field {
     drowMarkup () {
         this.ctx.fillStyle = this.markupStyle;
         for (let i = 0; i<=this.width/this.pxW; ++i)
-            this.ctx.fillRect(i*this.pxW-1 + this.startX%this.pxW, 0, 2, this.height);
+            this.ctx.fillRect(i*this.pxW-1 - this.startX%this.pxW, 0, 2, this.height);
         for (let i = 0; i<=this.height/this.pxH; ++i)
-            this.ctx.fillRect(0, i*this.pxH-1  + this.startY%this.pxH, this.width, 2);
+            this.ctx.fillRect(0, i*this.pxH-1 - this.startY%this.pxH, this.width, 2);
     }
 
     scaleTo (pxW, pxH = null) {
-        pxH = pxH && pxW;
-        this.pxH = pxH;
+        this.pxH = (pxH || pxW);
         this.pxW = pxW;
         this.update();
     }
