@@ -19,6 +19,22 @@ class Field {
         this.DOM.addEventListener('mouseup', (e)=>this.onMouseUp(e));
         this.DOM.addEventListener('mousemove', (e)=>this.onMouseMove(e));
         this.DOM.addEventListener('wheel', (e)=>this.onWheel(e), {passive: false});
+        window.addEventListener('keyup', (e)=>this.onKeyRelease(e));
+    }
+
+    onKeyRelease (event) {
+        if (event.key == "Delete") this.onKeyDelete(event);
+    }
+
+    onKeyDelete (event) {
+        this.deleteItems(this.selected);
+        this.selected = [];
+    }
+
+    deleteItems (items) {
+        this.blocks = this.blocks.filter(i => !items.includes(i));
+
+        this.update();
     }
 
     onWheel (event) {
