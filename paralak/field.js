@@ -5,11 +5,11 @@ class Field {
     #leftX = 0
     #topY = 0
 
-    constructor (canvasDOM, ws) {
-        this.ws = ws;
-        this.DOM = canvasDOM;
-        this.DOM.width = 800;//DNF
-        this.DOM.height = 600;//DNF
+    constructor (args) {
+        this.ws = args.ws;
+        this.DOM = args.DOM;
+        this.DOM.width = args.w;
+        this.DOM.height = args.h;
         this.ctx = this.DOM.getContext('2d');
         this.DOM.addEventListener('drop', (event) => this.onDrop(event));
         this.DOM.addEventListener('dragover', (event) => this.onDragOver(event));
