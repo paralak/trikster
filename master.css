@@ -4,9 +4,45 @@
     padding: 0;
 }
 
-.workspace .palette li {
+body {
+    overflow: hidden;
+}
+
+.workspace {
+    position: relative;
+}
+
+.workspace .palette img {
     background-image: var(--imgsrc);
     height: 50px;
     width: 50px;
     background-size: 50px;
+}
+
+.workspace .palette li {
+    display: flex;
+    list-style:none;
+    align-items:center;
+    justify-content:flex-end;
+    padding:3px;
+    border:1px solid;
+    margin:5px;
+}
+
+.workspace .palette span {
+    margin:10px;
+}
+
+.workspace .palette {
+    float: right;
+    background:#fff;
+    width: 200px;
+    padding: 5px;
+    border: 1px solid;
+    height: 100vh;
+}
+
+.workspace canvas {
+    position: absolute;
+    z-index: -1;
 }
