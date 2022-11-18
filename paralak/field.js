@@ -147,7 +147,10 @@ class Field {
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drowMarkup();
         this.blocks.forEach((item, i) => {
-            item.block.drowInCanvas(this, item);
+            if (!item.selected) item.block.drowInCanvas(this, item);
+        });
+        this.blocks.forEach((item, i) => {
+            if (item.selected) item.block.drowInCanvas(this, item);
         });
     }
 
