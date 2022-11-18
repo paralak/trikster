@@ -1,11 +1,13 @@
 class Block {
-    constructor (imgURL) {
-        this.img = imgURL;
+    constructor (args) {
+        this.img = args.imgURL;
         this.imgHTML = new Image();
-        this.imgHTML.src = imgURL;
+        this.imgHTML.src = args.imgURL;
+        this.name = args.name;
     }
 
     onDragStart (event) {
+        //event.preventDefault();
         this.ws.grabedBlock = this;
     }
 
@@ -37,9 +39,14 @@ class Block {
     initDOM (parentDOM, tag, ws) {
         this.ws = ws;
         this.DOM = document.createElement(tag);
-        this.DOM.style.setProperty('--imgsrc', 'url(' + this.img + ')');
+        this.DOM.innerSpan = document.createElement("span");
+        this.DOM.innerSpan.innerText = this.name;
+        this.DOM.innerImg = document.createElement("img");
+        this.DOM.innerImg.src = this.img;
         this.DOM.draggable = 'true';
         parentDOM.appendChild(this.DOM);
+        this.DOM.appendChild(this.DOM.innerSpan);
+        this.DOM.appendChild(this.DOM.innerImg);
         this.DOM.addEventListener('dragstart', (event) => this.onDragStart(event));
         this.DOM.addEventListener('dragend', (event) => this.onDragEnd(event));
     }

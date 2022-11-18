@@ -8,8 +8,8 @@ class Workspace {
         this.field = new Field({
             DOM:document.createElement('canvas'),
             ws:this,
-            w:1400,
-            h:800,
+            w:window.innerWidth,
+            h:window.innerHeight,
         });
         this.DOM.appendChild(this.field.DOM);
         this.palette = new Palette(document.createElement('ul'), this);
