@@ -23,34 +23,36 @@ class Field {
 
     onWheel (event) {
 
-        if (event.ctrlKey && event.wheelDelta > 0) {
+        if (event.altKey && event.wheelDelta > 0) {
             event.preventDefault();
             this.scaleTo(this.pxW + 1);
         }
-        if (event.ctrlKey && event.wheelDelta < 0) {
+        if (event.altKey && event.wheelDelta < 0) {
             event.preventDefault();
             this.scaleTo(this.pxW - 1);
         }
     }
 
     onMouseDown (event) {
-        if (event.ctrlKey && event.button == 0)
+        if (event.altKey && event.button == 0)
             return this.ws.dND = {
                 x:event.x,
                 y:event.y,
                 c:this.middleCords
             };
-        let t;
-        if (event.button == 0 && (t = this.checkSelectionBoxes(event)))
+        let t = this.checkSelectionBoxes(event);
+        if (event.button == 0)
+            this.changeSelected([t], event.ctrlKey);
+        if (event.button == 0 && t) {
             this.ws.dNDBlock = {
-                block:t,
+                blocks:this.selected,
                 x:event.x,
                 y:event.y,
-                c:this.toGivenCords({
-                    x:t.x + 1/2,
-                    y:t.y + 1/2
-                })
             };
+            this.ws.dNDBlock.blocks.forEach((item, i) => {
+                item.savePos();
+            });
+        }
     }
 
     onMouseUp (event) {
@@ -67,9 +69,15 @@ class Field {
             }
         t = this.ws.dNDBlock;
         if (t) {
-            t.block.pixelCords = this.toPixelCords({
-                x:t.c.x - t.x + event.x,
-                y:t.c.y - t.y + event.y
+            t.blocks.forEach((item, i) => {
+                let gCords = this.toGivenCords({
+                    x:item.savedX + 1/2,
+                    y:item.savedY + 1/2
+                })
+                item.pixelCords = this.toPixelCords({
+                    x:gCords.x - t.x + event.x,
+                    y:gCords.y - t.y + event.y
+                });
             });
             this.update();
         }
@@ -143,6 +151,30 @@ class Field {
         });
     }
 
+    changeSelected (newSelects, ctrl = false) {
+        let allSelects = []
+        if (ctrl)
+            allSelects = allSelects.concat(this.selected);
+        allSelects = allSelects.concat(newSelects);
+        this.selected = allSelects;
+        this.update();
+    }
+
+    get selected () {
+        let els = [];
+        this.blocks.forEach((item, i) => {
+            if (item.selected)
+                els.push(item);
+        });
+        return els;
+    }
+
+    set selected (newSelects) {
+        this.blocks.forEach((item, i) => {
+            item.selected = newSelects.includes(item);
+        });
+    }
+
     get startY () {return this.#topY}
     get startX () {return this.#leftX}
     set middleCords (cords) {
@@ -150,9 +182,10 @@ class Field {
         this.#topY = parseInt(cords.y - this.height / 2);
         this.update()
     }
-    get middleCords () {return {
-        x:this.#leftX + this.width / 2,
-        y:this.#topY + this.height / 2
+    get middleCords () {
+        return {
+            x:this.#leftX + this.width / 2,
+            y:this.#topY + this.height / 2
     }}
     get height () {return this.DOM.height;}
     get width () {return this.DOM.width;}

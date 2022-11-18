@@ -22,6 +22,16 @@ class Block {
             field.pxW * 2,
             field.pxH * 2,
         );
+        if (args.selected) {
+            field.ctx.strokeStyle = "rgba(255, 10, 10, 1)";
+            field.ctx.strokeRect(
+                gCords.x-2,
+                gCords.y-2,
+                field.pxW * 2+4,
+                field.pxH * 2+4,
+            )
+
+        }
     }
 
     initDOM (parentDOM, tag, ws) {
