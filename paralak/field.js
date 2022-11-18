@@ -41,7 +41,7 @@ class Field {
                 c:this.middleCords
             };
         let t = this.checkSelectionBoxes(event);
-        if (event.button == 0)
+        if (event.button == 0 && !this.selected.includes(t))
             this.changeSelected([t], event.ctrlKey);
         if (event.button == 0 && t) {
             this.ws.dNDBlock = {
