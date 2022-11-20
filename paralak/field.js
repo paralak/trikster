@@ -1,7 +1,7 @@
 class Field {
     pxH = 20
     pxW = 20
-    markupStyle = "rgba(50,50,50,0.1)"
+    markupStyle = "rgba(40,40,40,0.1)"
     #leftX = 0
     #topY = 0
 
@@ -14,10 +14,12 @@ class Field {
         this.DOM.addEventListener('drop', (event) => this.onDrop(event));
         this.DOM.addEventListener('dragover', (event) => this.onDragOver(event));
         this.blocks = [];
+        this.arrows = [];
         this.middleCords = {x:0,y:0};
         this.DOM.addEventListener('mousedown', (e)=>this.onMouseDown(e));
         this.DOM.addEventListener('mouseup', (e)=>this.onMouseUp(e));
         this.DOM.addEventListener('mousemove', (e)=>this.onMouseMove(e));
+        this.DOM.addEventListener('contextmenu', (e)=>{e.preventDefault()});
         this.DOM.addEventListener('wheel', (e)=>this.onWheel(e), {passive: false});
         window.addEventListener('keyup', (e)=>this.onKeyRelease(e));
     }
@@ -33,7 +35,6 @@ class Field {
 
     deleteItems (items) {
         this.blocks = this.blocks.filter(i => !items.includes(i));
-
         this.update();
     }
 
@@ -69,9 +70,15 @@ class Field {
                 item.savePos();
             });
         }
-    }
+        console.log(event);
+        if (event.button == 2 && t)
+            this.arrows.push(this.ws.createdArrow = new Arrow({start: t, ctx:this.ctx}));
+        }
 
     onMouseUp (event) {
+        if (this.ws.createdArrow)
+            this.update(this.ws.createdArrow.endElement = this.checkSelectionBoxes(event));
+        this.ws.createdArrow = null;
         this.ws.dND = null;
         this.ws.dNDBlock = null;
     }
@@ -109,12 +116,12 @@ class Field {
 
     checkSelectionBoxes (cords) {
         let pCords = this.toPixelCords(cords);
-        let selected = null;
+        let lastItem = null;
         this.blocks.forEach((item, i) => {
             if (item.checkSelectionBox(pCords))
-                selected = item;
+                lastItem = item;
         });
-        return selected;
+        return lastItem;
     }
 
     toPixelCords (cords) {
@@ -162,6 +169,9 @@ class Field {
     update () {
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drowMarkup();
+        this.arrows.forEach((item, i) => {
+            item.drow(this);
+        });
         this.blocks.forEach((item, i) => {
             if (!item.selected) item.block.drowInCanvas(this, item);
         });

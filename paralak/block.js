@@ -25,7 +25,7 @@ class Block {
             field.pxH * 2,
         );
         if (args.selected) {
-            field.ctx.strokeStyle = "rgba(255, 10, 10, 1)";
+            field.ctx.strokeStyle = "rgba(10, 255, 10, 1)";
             field.ctx.strokeRect(
                 gCords.x-2,
                 gCords.y-2,
