@@ -2,11 +2,18 @@ class BlockOnField {
     selected = false
     savedX = 0
     savedY = 0
+    unitedArrows = []
 
     constructor(args) {
         this.block = args.block;
         this.x = args.x;
         this.y = args.y;
+    }
+
+    deleteSelf () {
+        this.unitedArrows.forEach((item, i) => {
+            item.deleteSelf();
+        });
     }
 
     savePos () {

@@ -34,6 +34,9 @@ class Field {
     }
 
     deleteItems (items) {
+        this.blocks.filter(i => items.includes(i)).forEach((item, i) => {
+            item.deleteSelf();
+        });
         this.blocks = this.blocks.filter(i => !items.includes(i));
         this.update();
     }

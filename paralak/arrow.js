@@ -1,10 +1,34 @@
 class Arrow {
-    startElement = null
-    endElement = null
+    #startElement = null
+    #endElement = null
 
     constructor (args) {
         this.startElement = args.start;
         this.ctx = args.ctx;
+    }
+
+    deleteSelf () {
+        this.startElement = null;
+        this.endElement = null;
+    }
+
+    set endElement (el) {
+        if (this.#endElement)
+            this.#endElement.unitedArrows = this.#endElement.unitedArrows.filter(e => e != this.#endElement)
+        this.#endElement = el;
+        if (el) el.unitedArrows.push(this);
+    }
+    get endElement () {
+        return this.#endElement;
+    }
+    set startElement (el) {
+        if (this.#startElement)
+            this.#startElement.unitedArrows = this.#startElement.unitedArrows.filter(e => e != this.#startElement)
+        this.#startElement = el;
+        if (el) el.unitedArrows.push(this);
+    }
+    get startElement () {
+        return this.#startElement;
     }
 
     drow (field) {
