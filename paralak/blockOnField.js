@@ -17,8 +17,10 @@ class BlockOnField {
     }
 
     savePos () {
-        this.savedX = this.x;
-        this.savedY = this.y;
+        this.savedCords = {
+            x:this.x,
+            y:this.y
+        }
     }
 
     checkSelectionBox (cords) {

@@ -96,13 +96,10 @@ class Field {
         t = this.ws.dNDBlock;
         if (t) {
             t.blocks.forEach((item, i) => {
-                let gCords = this.toGivenCords({
-                    x:item.savedX + 1/2,
-                    y:item.savedY + 1/2
-                })
+                let gCords = this.toGivenCords(item.savedCords)
                 item.pixelCords = this.toPixelCords({
-                    x:gCords.x - t.x + event.x,
-                    y:gCords.y - t.y + event.y
+                    x:gCords.x + this.pxW - t.x + event.x,
+                    y:gCords.y + this.pxH - t.y + event.y
                 });
             });
             this.update();
