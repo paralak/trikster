@@ -163,10 +163,12 @@ class Field {
             this.ctx.fillRect(0, i*this.pxH-1 - this.startY%this.pxH, this.width, 2);
     }
 
-    scaleTo (pxW, pxH = null) {
-        this.pxH = (pxH || pxW);
-        this.pxW = pxW;
-        this.update();
+    scaleTo (pxSize) {
+        if ((pxSize > 5) && (pxSize < 50)) {
+            this.pxH = pxSize;
+            this.pxW = pxSize;
+            this.update();
+        }
     }
 
     update () {
