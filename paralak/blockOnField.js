@@ -30,4 +30,11 @@ class BlockOnField {
         this.x = pCords.x;
         this.y = pCords.y;
     }
+
+    get mCords () {
+        return {
+            x:this.x+1,
+            y:this.y+1,
+        }
+    }
 }
