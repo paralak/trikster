@@ -30,7 +30,7 @@ class BlockOnField {
 
     get exitArrow () {
         let eAs = this.unitedArrows.filter(x => x.startElement == this);
-        if (eAs.lenght > 1) throw "to many exit arrows";
+        if (eAs.length > 1) throw "to many exit arrows";
         return eAs[0];
     }
 
