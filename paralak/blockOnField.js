@@ -28,6 +28,12 @@ class BlockOnField {
             && ((cords.y==this.y)||(cords.y==this.y+1))
     }
 
+    get exitArrow () {
+        let eAs = this.unitedArrows.filter(x => x.startElement == this);
+        if (eAs.lenght > 1) throw "to many exit arrows";
+        return eAs[0];
+    }
+
     set pixelCords (pCords) {
         this.x = pCords.x;
         this.y = pCords.y;
