@@ -168,6 +168,17 @@ class Field {
         }
     }
 
+    get path () {
+        let starts = this.blocks.filter(x => x.block.name == "start");
+        console.log(starts);
+        if (starts.length != 1) throw "to many starts";
+        let path = []
+        path.push(starts[0].block);
+        let t = starts[0];
+        while (t = (t.exitArrow && t.exitArrow.endElement)) path.push(t.block);
+        return path;
+    }
+
     update () {
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drowMarkup();
