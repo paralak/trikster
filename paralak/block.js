@@ -1,4 +1,5 @@
 class Block {
+    #trastedId = Block._generateId()
     constructor (args) {
         this.img = args.imgURL;
         this.imgHTML = new Image();
@@ -51,4 +52,15 @@ class Block {
         this.DOM.addEventListener('dragstart', (event) => this.onDragStart(event));
         this.DOM.addEventListener('dragend', (event) => this.onDragEnd(event));
     }
+
+    get id () {
+        return this.#trastedId;
+    }
 }
+
+Block._generateId = (function () {
+    let id = 0;
+    return function () {
+        return id++;
+    }
+})()
