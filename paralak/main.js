@@ -7,7 +7,15 @@ window.addEventListener('load', ()=>{
         }),
         new Block({
             imgURL:'paralak/sources/block-2.png',
-            name:'stop',
+            name:'end',
+        }),
+        new Block({
+            imgURL:'paralak/sources/block-3.png',
+            name:'block-3',
+        }),
+        new Block({
+            imgURL:'paralak/sources/block-4.png',
+            name:'block-4',
         }),
     ];
 
