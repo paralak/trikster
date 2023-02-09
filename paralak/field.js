@@ -155,9 +155,9 @@ class Field {
     drowMarkup () {
         this.ctx.fillStyle = this.markupStyle;
         for (let i = 0; i<=this.width/this.pxW; ++i)
-            this.ctx.fillRect(i*this.pxW-1 - this.startX%this.pxW, 0, 2, this.height);
+            this.ctx.fillRect(i*this.pxW-1 - this.startX%this.pxW, 0, 1, this.height);
         for (let i = 0; i<=this.height/this.pxH; ++i)
-            this.ctx.fillRect(0, i*this.pxH-1 - this.startY%this.pxH, this.width, 2);
+            this.ctx.fillRect(0, i*this.pxH-1 - this.startY%this.pxH, this.width, 1);
     }
 
     scaleTo (pxSize) {

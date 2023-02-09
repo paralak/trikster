@@ -27,7 +27,7 @@ class BlockOnField {
         return ((cords.x==this.x)||(cords.x==this.x+1))
             && ((cords.y==this.y)||(cords.y==this.y+1))
     }
-
+    
     get exitArrow () {
         let eAs = this.unitedArrows.filter(x => x.startElement == this);
         if (eAs.length > 1) throw "to many exit arrows";
