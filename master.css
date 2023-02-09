@@ -22,21 +22,21 @@ body {
 
 .workspace .palette li {
     display: flex;
-    list-style:none;
-    align-items:center;
-    justify-content:flex-end;
-    padding:3px;
-    border:1px solid;
-    margin:5px;
+    list-style: none;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 3px;
+    border: 1px solid;
+    margin: 5px;
 }
 
 .workspace .palette span {
-    margin:10px;
+    margin: 10px;
 }
 
 .workspace .palette {
     float: right;
-    background:#f8f8f8;
+    background: #f8f8f8;
     width: 200px;
     padding: 5px;
     border: 1px solid;
@@ -46,4 +46,20 @@ body {
 .workspace canvas {
     position: absolute;
     z-index: -1;
+}
+
+.fields-panel {
+    height: 50px;
+    background: #fff;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.fields-panel li {
+    font-size: 20px;
+    border: 1px solid black;
+    display: inline-flex;
+    padding: 5px;
+    margin-right: 20px;
+    min-width: 250px;
 }

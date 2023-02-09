@@ -5,7 +5,8 @@ class Field {
     #leftX = 0
     #topY = 0
 
-    constructor (args) {
+    constructor(args) {
+        this.name = args.name;
         this.ws = args.ws;
         this.DOM = args.DOM;
         this.DOM.width = args.w;
